@@ -1,4 +1,4 @@
-const { getAllTopics, getDocsByEndpoints } = require("./servers.models");
+const { getAllTopics, getObjByEndpoints } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
   getAllTopics()
@@ -9,7 +9,7 @@ exports.getTopics = (req, res, next) => {
 };
 
 exports.getByEndpoints = (req, res, next) => {
-  getDocsByEndpoints()
+  getObjByEndpoints()
     .then((endpoints) => {
       res.status(200).send({ endpoints });
     })
