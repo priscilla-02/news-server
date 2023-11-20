@@ -13,7 +13,8 @@ describe("GET /api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then(({ body }) => {
-        const topics = body.result;
+        console.log(body);
+        const { topics } = body;
         expect(topics).toHaveLength(3);
         topics.forEach((topic) => {
           expect(topic).toMatchObject({
