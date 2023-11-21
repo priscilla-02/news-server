@@ -8,6 +8,7 @@ exports.getTopics = (req, res, next) => {
   getAllTopics()
     .then((topics) => {
       res.status(200).send({ topics });
+
     })
     .catch(next);
 };
@@ -24,6 +25,7 @@ exports.getArticles = (req, res, next) => {
   getAllArticles()
     .then((article) => {
       res.status(200).send({ article });
+
     })
     .catch(next);
 };
