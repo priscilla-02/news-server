@@ -66,6 +66,7 @@ describe("GET /api/articles", () => {
         const { article } = body;
         expect(Array.isArray(article)).toBe(true);
         expect(article).toHaveLength(13);
+        expect(article).toBeSortedBy("created_at", { descending: true });
         article.forEach((eachArticle) => {
           expect(eachArticle).toHaveProperty("author");
           expect(eachArticle).toHaveProperty("title");
