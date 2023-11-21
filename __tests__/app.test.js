@@ -42,47 +42,12 @@ describe("GET /api", () => {
       .then(({ body }) => {
         expect(typeof body).toBe("object");
         expect(body.endpoints).toEqual(expectedEndpoints);
-        //
-        const apiEndpoint = body.endpoints["GET /api"];
-        expect(apiEndpoint).toBeDefined();
-        expect(typeof apiEndpoint).toBe("object");
-        expect(apiEndpoint).toHaveProperty("description");
-        expect(typeof apiEndpoint.description).toBe("string");
-        //
-        const topicsEndpoint = body.endpoints["GET /api/topics"];
-        expect(topicsEndpoint).toBeDefined();
-        expect(typeof topicsEndpoint).toBe("object");
-        expect(topicsEndpoint).toHaveProperty("description");
-        expect(typeof topicsEndpoint.description).toBe("string");
-        expect(topicsEndpoint).toHaveProperty("queries");
-        expect(Array.isArray(topicsEndpoint.queries)).toBe(true);
-        expect(topicsEndpoint.queries).toEqual([]);
-        expect(topicsEndpoint).toHaveProperty("exampleResponse");
-        expect(typeof topicsEndpoint.exampleResponse).toBe("object");
-        expect(topicsEndpoint).toHaveProperty("exampleResponse");
-        expect(Object.keys(topicsEndpoint.exampleResponse)).toEqual(["topics"]);
-        //
-        const articlesEndpoint = body.endpoints["GET /api/articles"];
-        expect(articlesEndpoint).toBeDefined();
-        expect(typeof articlesEndpoint).toBe("object");
-        expect(articlesEndpoint).toHaveProperty("description");
-        expect(typeof articlesEndpoint.description).toBe("string");
-        expect(articlesEndpoint).toHaveProperty("queries");
-        expect(Array.isArray(articlesEndpoint.queries)).toBe(true);
-        expect(articlesEndpoint.queries).toEqual([
-          "author",
-          "topic",
-          "sort_by",
-          "order",
-        ]);
-        expect(articlesEndpoint).toHaveProperty("exampleResponse");
-        expect(typeof articlesEndpoint.exampleResponse).toBe("object");
-        expect(Object.keys(articlesEndpoint.exampleResponse)).toEqual([
-          "articles",
-        ]);
       });
   });
-  test("404: responds with an error message with invalid request endpoint", () => {
+});
+
+describe("GET /api", () => {
+  test("404: responds with an error message with invalid paths", () => {
     return request(app)
       .get("/api/invalid")
       .expect(404)
