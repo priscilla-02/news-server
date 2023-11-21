@@ -13,3 +13,22 @@ exports.getObjByEndpoints = () => {
     return objEndpoints;
   });
 };
+
+exports.getCommentsByArticleId = (article_id) => {
+  return db
+    .query(
+      `
+    SELECT * FROM comments
+    WHERE article_id = $1
+    ORDER BY created_at DESC;
+  `,
+      [article_id]
+    )
+    .then((result) => {
+      const returnComments = result.rows;
+      if (!returnComments.length) {
+        return Promise.reject({ status: 404, msg: "Not Found" });
+      }
+      return returnComments;
+    });
+};
