@@ -79,12 +79,30 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("200: responds with an empty array when no comment exists for the aritcle_id requested", () => {
+    return request(app)
+      .get("/api/articles/4/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toHaveLength(0);
+        expect(comments).toEqual([]);
+      });
+  });
   test("404: responds with an error message when article_id is invalid", () => {
     return request(app)
       .get("/api/articles/1000/comments")
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("400: responds with an error message when article_id is invalid", () => {
+    return request(app)
+      .get("/api/articles/a/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
       });
   });
 });
