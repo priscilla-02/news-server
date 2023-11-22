@@ -1,8 +1,10 @@
 const {
   getAllTopics,
   getObjByEndpoints,
+  getCommentsByArticleId,
   getAllArticles,
   selectArticlebyId,
+  checkIfArticleExists,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -17,6 +19,19 @@ exports.getByEndpoints = (req, res, next) => {
   getObjByEndpoints()
     .then((endpoints) => {
       res.status(200).send({ endpoints });
+    })
+    .catch(next);
+};
+
+exports.getComments = (req, res, next) => {
+  const { article_id } = req.params;
+
+  checkIfArticleExists(article_id)
+    .then(() => {
+      return getCommentsByArticleId(article_id);
+    })
+    .then((comments) => {
+      res.status(200).send({ comments });
     })
     .catch(next);
 };
