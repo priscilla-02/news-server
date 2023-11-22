@@ -8,6 +8,7 @@ exports.getTopics = (req, res, next) => {
   getAllTopics()
     .then((topics) => {
       res.status(200).send({ topics });
+
     })
     .catch(next);
 };
@@ -20,6 +21,15 @@ exports.getByEndpoints = (req, res, next) => {
     .catch(next);
 };
 
+
+exports.getArticles = (req, res, next) => {
+  getAllArticles()
+    .then((article) => {
+      res.status(200).send({ article });
+
+    })
+    .catch(next);
+
 exports.getByArticleId = (req, res, next) => {
   const { article_id } = req.params;
 
@@ -30,4 +40,5 @@ exports.getByArticleId = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+
 };
