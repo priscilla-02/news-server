@@ -30,8 +30,10 @@ exports.getAllArticles = () => {
     )
     .then((result) => {
       return result.rows;
+    });
+};
 
-exports.getAllArticles = (article_id) => {
+exports.selectArticlebyId = (article_id) => {
   return db
     .query(`SELECT * FROM articles WHERE article_id = $1`, [article_id])
     .then((result) => {
@@ -41,6 +43,5 @@ exports.getAllArticles = (article_id) => {
       }
 
       return article;
-
     });
 };
