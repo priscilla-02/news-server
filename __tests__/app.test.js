@@ -88,3 +88,73 @@ describe("GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("GET /api/articles", () => {
+  test("200: responds with an article object with all these properties", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(Array.isArray(article)).toBe(true);
+        expect(article).toHaveLength(13);
+        expect(article).toBeSortedBy("created_at", { descending: true });
+        article.forEach((eachArticle) => {
+          expect(eachArticle).toHaveProperty("author");
+          expect(eachArticle).toHaveProperty("title");
+          expect(eachArticle).toHaveProperty("article_id");
+          expect(eachArticle).toHaveProperty("topic");
+          expect(eachArticle).toHaveProperty("created_at");
+          expect(eachArticle).toHaveProperty("votes");
+          expect(eachArticle).toHaveProperty("article_img_url");
+          expect(eachArticle).toHaveProperty("comment_count");
+          expect(article).not.toHaveProperty("body");
+        });
+      });
+  });
+  test("404: responds with an error message with invalid paths", () => {
+    return request(app)
+      .get("/api/invalid")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id", () => {
+  test("200: responds with an article object with all the properties", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(typeof article).toBe("object");
+        expect(article).toHaveProperty("author");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("article_id");
+        expect(article).toHaveProperty("body");
+        expect(article).toHaveProperty("topic");
+        expect(article).toHaveProperty("created_at");
+        expect(article).toHaveProperty("votes");
+        expect(article).toHaveProperty("article_img_url");
+      });
+  });
+  test("404: responds with an error message with article_id not found", () => {
+    return request(app)
+      .get("/api/articles/1000")
+
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("400: responds with an error message with invalid request", () => {
+    return request(app)
+      .get("/api/articles/christmas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
