@@ -3,22 +3,20 @@ const app = express();
 const {
   getTopics,
   getByEndpoints,
-  getComments,
-
-  getArticles,
-
   getByArticleId,
+  getArticles,
+  getComments,
 } = require("./servers.controllers");
 
 app.get("/api/topics", getTopics);
 
 app.get("/api", getByEndpoints);
 
-app.get("/api/articles/:article_id/comments", getComments);
+app.get("/api/articles/:article_id", getByArticleId);
 
 app.get("/api/articles", getArticles);
 
-app.get("/api/articles/:article_id", getByArticleId);
+app.get("/api/articles/:article_id/comments", getComments);
 
 app.use((err, req, res, next) => {
   if (err.status) {
