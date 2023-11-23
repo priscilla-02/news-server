@@ -59,16 +59,14 @@ exports.getComments = (req, res, next) => {
 
 exports.postComments = (req, res, next) => {
   const { username, body } = req.body;
-
   const { article_id } = req.params;
 
   checkIfArticleExists(article_id)
     .then(() => {
       return insertNewComments(username, body, article_id);
     })
-    .then((result) => {
-      // console.log(result);
-      res.status(201).send(result);
+    .then((updatedComments) => {
+      res.status(201).send(updatedComments);
     })
     .catch(next);
 };

@@ -225,7 +225,7 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
-  test("404: responds with error message when the given username does not exist", () => {
+  test("400: responds with error message when the given username does not exist", () => {
     const newComment = {
       username: "Hello_I_am_New",
       body: "This article is so confusing.",
@@ -233,7 +233,7 @@ describe("POST /api/articles/:article_id/comments", () => {
     return request(app)
       .post("/api/articles/3/comments")
       .send(newComment)
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("This user does not exist");
       });

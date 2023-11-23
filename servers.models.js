@@ -81,9 +81,7 @@ exports.getCommentsByArticleId = (article_id) => {
 };
 
 exports.insertNewComments = (username, body, article_id) => {
-  // console.log(username);
   if ((!username && body) || (username && !body)) {
-    // console.log(username);
     return Promise.reject({
       status: 400,
       msg: "Missing username or body",
@@ -94,7 +92,7 @@ exports.insertNewComments = (username, body, article_id) => {
     .then(({ rows }) => {
       if (rows.length === 0) {
         return Promise.reject({
-          status: 404,
+          status: 400,
           msg: "This user does not exist",
         });
       }
