@@ -13,6 +13,8 @@ const {
   selectUsers,
 
   removeComments,
+  checkIfTopicExists,
+  selectArticles,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -44,7 +46,16 @@ exports.getByArticleId = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  getAllArticles()
+  const { topic } = req.query;
+  if (topic == undefined) {
+    return getAllArticles().then((article) => {
+      res.status(200).send({ article });
+    });
+  }
+  checkIfTopicExists(topic)
+    .then(() => {
+      return getAllArticles(topic);
+    })
     .then((article) => {
       res.status(200).send({ article });
     })
@@ -100,6 +111,30 @@ exports.deleteComments = (req, res, next) => {
   removeComments(comment_id)
     .then(() => {
       res.status(204).send();
+    })
+    .catch(next);
+};
+
+// exports.getArticlebyQuery = (req, res, next) => {
+//   const { topic } = req.body;
+//   console.log(topic);
+//   return checkIfTopicExists(topic)
+//     .then(() => {
+//       return selectArticles(topic);
+//     })
+//     .then((articles) => {
+//       res.status(200).send(articles);
+//     })
+//     .catch(next);
+// };
+
+exports.getArticlebyQuery = (req, res, next) => {
+  console.log(req.query);
+  const { topic } = req.query;
+  console.log(topic);
+  selectArticles(topic)
+    .then((articles) => {
+      res.status(200).send(articles);
     })
     .catch(next);
 };
