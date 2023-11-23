@@ -177,6 +177,7 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
+
 describe("PATCH /api/articles/:article_id", () => {
   test("200: responds with an updated article with the current vote incremented by the inc_vote given", () => {
     return request(app)
@@ -250,6 +251,91 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Article Not Found");
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: responds with an article object with all the properties", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "This article is so confusing.",
+    };
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        const comment = body;
+        expect(comment).toMatchObject({
+          comment_id: 19,
+          article_id: 3,
+          author: "butter_bridge",
+          body: "This article is so confusing.",
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("404: responds with error message when the givrn article_id does not exist", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "This article is so confusing.",
+    };
+    return request(app)
+      .post("/api/articles/1000/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("404: responds with error message when the article_id is not valid", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "This article is so confusing.",
+    };
+    return request(app)
+      .post("/api/articles/1000/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("400: responds with error message when the given username does not exist", () => {
+    const newComment = {
+      username: "Hello_I_am_New",
+      body: "This article is so confusing.",
+    };
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("This user does not exist");
+      });
+  });
+  test("400: responds with error message when the username input is missing", () => {
+    const newComment = {
+      body: "This article is so confusing.",
+    };
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Missing username or body");
+      });
+  });
+  test("400: responds with error message when the body input is missing", () => {
+    const newComment = {
+      username: "butter_bridge",
+    };
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Missing username or body");
+
       });
   });
 });

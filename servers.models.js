@@ -60,8 +60,10 @@ exports.checkIfArticleExists = (article_id) => {
       if (!returnComments.length) {
         return Promise.reject({ status: 404, msg: "Not Found" });
       }
+      return returnComments;
     });
 };
+
 exports.getCommentsByArticleId = (article_id) => {
   return db
     .query(
@@ -78,6 +80,7 @@ exports.getCommentsByArticleId = (article_id) => {
     });
 };
 
+
 exports.updateVote = (article_id, inc_votes) => {
   if (!inc_votes) {
     return Promise.reject({ status: 400, msg: "Invalid inc_votes" });
@@ -92,5 +95,31 @@ exports.updateVote = (article_id, inc_votes) => {
         return Promise.reject({ status: 404, msg: "Article Not Found" });
       }
       return rows[0];
+
+exports.insertNewComments = (username, body, article_id) => {
+  if ((!username && body) || (username && !body)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Missing username or body",
+    });
+  }
+  return db
+    .query(`SELECT * FROM users WHERE username = $1`, [username])
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 400,
+          msg: "This user does not exist",
+        });
+      }
+      return db
+        .query(
+          `INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;`,
+          [username, body, article_id]
+        )
+        .then(({ rows }) => {
+          return rows[0];
+        });
+
     });
 };
