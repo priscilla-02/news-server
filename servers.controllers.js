@@ -9,6 +9,7 @@ const {
   updateVote,
 
   insertNewComments,
+  removeComments,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -62,7 +63,6 @@ exports.getComments = (req, res, next) => {
 
 exports.patchArticle = (req, res, next) => {
   const { article_id } = req.params;
-  console.log(article_id);
   const { inc_votes } = req.body;
 
   updateVote(article_id, inc_votes)
@@ -82,6 +82,15 @@ exports.postComments = (req, res, next) => {
     })
     .then((updatedComments) => {
       res.status(201).send(updatedComments);
+    })
+    .catch(next);
+};
+
+exports.deleteComments = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeComments(comment_id)
+    .then(() => {
+      res.status(204).send();
     })
     .catch(next);
 };
