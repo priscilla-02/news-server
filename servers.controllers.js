@@ -5,7 +5,11 @@ const {
   getAllArticles,
   checkIfArticleExists,
   getCommentsByArticleId,
+
+  updateVote,
+
   insertNewComments,
+
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -57,6 +61,15 @@ exports.getComments = (req, res, next) => {
     .catch(next);
 };
 
+
+exports.patchArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+
+  updateVote(article_id, inc_votes)
+    .then((article) => {
+      res.status(200).send({ article });
+
 exports.postComments = (req, res, next) => {
   const { username, body } = req.body;
   const { article_id } = req.params;
@@ -67,6 +80,7 @@ exports.postComments = (req, res, next) => {
     })
     .then((updatedComments) => {
       res.status(201).send(updatedComments);
+
     })
     .catch(next);
 };

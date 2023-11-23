@@ -177,6 +177,81 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: responds with an updated article with the current vote incremented by the inc_vote given", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 10 })
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toMatchObject({
+          article_id: 1,
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: 110,
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("200: responds with an updated article with the current vote decreased by the inc_vote given", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -10 })
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toMatchObject({
+          article_id: 1,
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: 90,
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("400: responds with an error message with no inc_vote is given", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid inc_votes");
+      });
+  });
+  test("400: responds with an error message with invalid inc_vote is given", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_vote: "virus" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid inc_votes");
+      });
+  });
+  test("400: responds with an error message with invalid article_id", () => {
+    return request(app)
+      .patch("/api/articles/christmas")
+      .send({ inc_votes: 10 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("404: responds with an error message with the article requested does not exist", () => {
+    return request(app)
+      .patch("/api/articles/1000")
+      .send({ inc_votes: 10 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article Not Found");
+
 describe("POST /api/articles/:article_id/comments", () => {
   test("201: responds with an article object with all the properties", () => {
     const newComment = {
@@ -260,6 +335,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Missing username or body");
+
       });
   });
 });
