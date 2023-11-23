@@ -341,6 +341,24 @@ describe("POST /api/articles/:article_id/comments", () => {
   });
 });
 
+
+describe("GET /api/users", () => {
+  test("200: responds with an array of objects with all these properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toHaveLength(4);
+        expect(Array.isArray(users)).toBe(true);
+        users.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
+
 describe("/api/comments/:comment_id", () => {
   test("204: deletes the comment by comment_id and returns no content", () => {
     return request(app)
@@ -364,6 +382,7 @@ describe("/api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad Request");
+
       });
   });
 });

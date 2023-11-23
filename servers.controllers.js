@@ -9,7 +9,11 @@ const {
   updateVote,
 
   insertNewComments,
+
+  selectUsers,
+
   removeComments,
+
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -86,11 +90,18 @@ exports.postComments = (req, res, next) => {
     .catch(next);
 };
 
+
+exports.getUsers = (req, res, next) => {
+  selectUsers()
+    .then((users) => {
+      res.status(200).send({ users });
+
 exports.deleteComments = (req, res, next) => {
   const { comment_id } = req.params;
   removeComments(comment_id)
     .then(() => {
       res.status(204).send();
+
     })
     .catch(next);
 };
