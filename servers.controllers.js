@@ -5,6 +5,7 @@ const {
   getAllArticles,
   checkIfArticleExists,
   getCommentsByArticleId,
+  insertNewComments,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -52,6 +53,20 @@ exports.getComments = (req, res, next) => {
     })
     .then((comments) => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+exports.postComments = (req, res, next) => {
+  const { username, body } = req.body;
+  const { article_id } = req.params;
+
+  checkIfArticleExists(article_id)
+    .then(() => {
+      return insertNewComments(username, body, article_id);
+    })
+    .then((updatedComments) => {
+      res.status(201).send(updatedComments);
     })
     .catch(next);
 };
