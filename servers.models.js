@@ -124,11 +124,11 @@ exports.insertNewComments = (username, body, article_id) => {
     });
 };
 
-
 exports.selectUsers = () => {
   return db.query(`SELECT * FROM users;`).then(({ rows }) => {
     return rows;
   });
+};
 
 exports.removeComments = (comment_id) => {
   return db
@@ -140,5 +140,4 @@ exports.removeComments = (comment_id) => {
         return Promise.reject({ status: 404, msg: "Comment not found" });
       }
     });
-
 };
