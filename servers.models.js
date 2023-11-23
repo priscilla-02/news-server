@@ -162,26 +162,3 @@ exports.checkIfTopicExists = (topic) => {
       }
     });
 };
-
-// exports.selectArticles = (topic) => {
-//   console.log(topic);
-//   let queryValues = [];
-//   let queryString = `SELECT articles.article_id, articles.title, articles.body, articles.votes, articles.topic, articles.author, articles.created_at,
-//              article_img_url,
-//              COUNT(comment_id) AS comment_count
-//              FROM articles
-//              LEFT JOIN comments
-//              ON articles.article_id = comments.article_id`;
-
-//   if (topic) {
-//     queryString += `WHERE articles.topic = $1 `;
-//     queryValues.push(topic);
-//   }
-//   queryString += `GROUP BY articles.article_id
-//   ORDER BY articles.created_at DESC;`;
-
-//   return db.query(queryString, queryValues).then(({ rows }) => {
-//     console.log(rows);
-//     return rows;
-//   });
-// };

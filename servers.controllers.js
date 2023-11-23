@@ -47,7 +47,7 @@ exports.getByArticleId = (req, res, next) => {
 
 exports.getArticles = (req, res, next) => {
   const { topic } = req.query;
-  if (topic == undefined) {
+  if (!topic) {
     return getAllArticles().then((article) => {
       res.status(200).send({ article });
     });
@@ -114,19 +114,6 @@ exports.deleteComments = (req, res, next) => {
     })
     .catch(next);
 };
-
-// exports.getArticlebyQuery = (req, res, next) => {
-//   const { topic } = req.body;
-//   console.log(topic);
-//   return checkIfTopicExists(topic)
-//     .then(() => {
-//       return selectArticles(topic);
-//     })
-//     .then((articles) => {
-//       res.status(200).send(articles);
-//     })
-//     .catch(next);
-// };
 
 exports.getArticlebyQuery = (req, res, next) => {
   console.log(req.query);
