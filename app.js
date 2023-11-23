@@ -10,7 +10,7 @@ const {
   patchArticle,
 
   postComments,
-
+  getUsers,
 } = require("./servers.controllers");
 
 app.use(express.json());
@@ -25,11 +25,11 @@ app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id/comments", getComments);
 
-
 app.patch("/api/articles/:article_id", patchArticle);
 
 app.post("/api/articles/:article_id/comments", postComments);
 
+app.get("/api/users", getUsers);
 
 app.use((err, req, res, next) => {
   if (err.status) {
