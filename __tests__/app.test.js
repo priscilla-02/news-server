@@ -341,6 +341,7 @@ describe("POST /api/articles/:article_id/comments", () => {
   });
 });
 
+
 describe("GET /api/users", () => {
   test("200: responds with an array of objects with all these properties", () => {
     return request(app)
@@ -357,6 +358,31 @@ describe("GET /api/users", () => {
             avatar_url: expect.any(String),
           });
         });
+
+describe("/api/comments/:comment_id", () => {
+  test("204: deletes the comment by comment_id and returns no content", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+  test("404: repsonds with error message with invalid comment_id", () => {
+    return request(app)
+      .delete("/api/comments/1000")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Comment not found");
+      });
+  });
+  test("400: repsonds with error message with invalid comment_id", () => {
+    return request(app)
+      .delete("/api/comments/KFCTurkeyBurger")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+
       });
   });
 });
