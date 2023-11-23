@@ -177,7 +177,6 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
-
 describe("PATCH /api/articles/:article_id", () => {
   test("200: responds with an updated article with the current vote incremented by the inc_vote given", () => {
     return request(app)
@@ -251,6 +250,9 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Article Not Found");
+      });
+  });
+});
 
 describe("POST /api/articles/:article_id/comments", () => {
   test("201: responds with an article object with all the properties", () => {
@@ -335,7 +337,6 @@ describe("POST /api/articles/:article_id/comments", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Missing username or body");
-
       });
   });
 });
