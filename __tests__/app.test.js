@@ -158,13 +158,24 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toHaveProperty("article_img_url");
       });
   });
+  test("200: responds with an article object that includes comment_count for the article selected", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.article_id).toBe(3);
+        expect(article).toHaveProperty("comment_count");
+        expect(article.comment_count).toBe("2");
+      });
+  });
   test("404: responds with an error message with article_id not found", () => {
     return request(app)
       .get("/api/articles/1000")
 
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Not Found");
+        expect(body.msg).toBe("Article Not Found");
       });
   });
   test("400: responds with an error message with invalid request", () => {
