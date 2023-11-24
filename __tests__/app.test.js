@@ -473,3 +473,27 @@ describe("GET /api/articles?topic=", () => {
       });
   });
 });
+
+describe("GET /api/users/:username", () => {
+  test("200: responds with the user by username", () => {
+    return request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+        expect(user).toHaveProperty("username");
+        expect(user).toHaveProperty("avatar_url");
+        expect(user).toHaveProperty("name");
+        expect(user.username).toBe("butter_bridge");
+      });
+  });
+
+  test("404: responds with an error message when user not found", () => {
+    return request(app)
+      .get("/api/users/imposter")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User Not Found");
+      });
+  });
+});

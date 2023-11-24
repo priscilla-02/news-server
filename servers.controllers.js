@@ -15,6 +15,7 @@ const {
   removeComments,
 
   selectArticles,
+  selectUserByUsername,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -114,6 +115,16 @@ exports.getArticlebyQuery = (req, res, next) => {
   selectArticles(topic)
     .then((articles) => {
       res.status(200).send(articles);
+    })
+    .catch(next);
+};
+
+exports.getUsername = (req, res, next) => {
+  const { username } = req.params;
+
+  selectUserByUsername(username)
+    .then((user) => {
+      res.status(200).send({ user });
     })
     .catch(next);
 };
