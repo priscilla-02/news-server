@@ -8,7 +8,7 @@ Hosted Version: https://news-project-gpvj.onrender.com
 
 ## Dependencies:
 
-- Node.js (v 20.8.0 or above)
+- Node.js (v 14.0.0 or above)
 - PostgreSQL (v 14.8 or above)
 
 ## Setup Instructions:
