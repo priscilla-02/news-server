@@ -5,17 +5,14 @@ const {
   getAllArticles,
   checkIfArticleExists,
   getCommentsByArticleId,
-
   updateVote,
-
   insertNewComments,
-
   selectUsers,
-
   removeComments,
-
   selectArticles,
   selectUserByUsername,
+  updateCommentVotes,
+  checkIfCommentExists,
 } = require("./servers.models");
 
 exports.getTopics = (req, res, next) => {
@@ -125,6 +122,19 @@ exports.getUsername = (req, res, next) => {
   selectUserByUsername(username)
     .then((user) => {
       res.status(200).send({ user });
+    })
+    .catch(next);
+};
+
+exports.patchCommentVotes = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+  checkIfCommentExists(comment_id)
+    .then(() => {
+      return updateCommentVotes(comment_id, inc_votes);
+    })
+    .then((comment) => {
+      res.status(200).send({ comment: comment });
     })
     .catch(next);
 };

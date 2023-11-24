@@ -218,3 +218,39 @@ exports.selectUserByUsername = (username) => {
       return rows[0];
     });
 };
+
+exports.checkIfCommentExists = (comment_id) => {
+  return db
+    .query(
+      `SELECT * FROM comments
+        WHERE comment_id = $1;`,
+      [comment_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Comment does not exist" });
+      }
+    });
+};
+
+exports.updateCommentVotes = (comment_id, inc_votes = 0) => {
+  return db
+    .query(
+      `
+      UPDATE comments
+      SET votes = votes + $1
+      WHERE comment_id = $2
+      RETURNING *;
+    `,
+      [inc_votes, comment_id]
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Comment Not Found",
+        });
+      }
+      return result.rows[0];
+    });
+};

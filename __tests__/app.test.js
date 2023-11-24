@@ -497,3 +497,46 @@ describe("GET /api/users/:username", () => {
       });
   });
 });
+
+describe("PATCH /api/comments/:comment_id", () => {
+  test("200: responds with the updated increased comment", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({ inc_votes: 1 })
+      .expect(200)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment.votes).toBe(17);
+      });
+  });
+
+  test("200: responds with the updated decreased comment", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({ inc_votes: -1 })
+      .expect(200)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment.votes).toBe(15);
+      });
+  });
+
+  test("404: responds with an error message when comment not found", () => {
+    return request(app)
+      .patch("/api/comments/1000")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Comment does not exist");
+      });
+  });
+  test("400 responds with an error message when invalid comment_id", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({ inc_votes: "kebab" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});

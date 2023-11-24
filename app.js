@@ -6,15 +6,12 @@ const {
   getByArticleId,
   getArticles,
   getComments,
-
   patchArticle,
-
   postComments,
-
   getUsers,
-
   deleteComments,
   getUsername,
+  patchCommentVotes,
 } = require("./servers.controllers");
 
 app.use(express.json());
@@ -38,6 +35,8 @@ app.get("/api/users", getUsers);
 app.delete("/api/comments/:comment_id", deleteComments);
 
 app.get("/api/users/:username", getUsername);
+
+app.patch("/api/comments/:comment_id", patchCommentVotes);
 
 app.use((err, req, res, next) => {
   if (err.status) {
