@@ -387,3 +387,34 @@ describe("/api/comments/:comment_id", () => {
       });
   });
 });
+
+describe("GET /api/articles?topic=", () => {
+  test("200: responds with an array of filtered articles the topic required", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toHaveLength(12);
+        article.forEach((article) => {
+          expect(article.topic).toBe("mitch");
+        });
+      });
+  });
+  test("404: responds with error message when no articles exists with the topic required", () => {
+    return request(app)
+      .get("/api/articles?topic=paper")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No Article for this topic exist");
+      });
+  });
+  test("404: responds with error message with no topic found", () => {
+    return request(app)
+      .get("/api/articles?topic=WhyNotWeekendYet")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Topic Not Found");
+      });
+  });
+});
