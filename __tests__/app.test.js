@@ -138,6 +138,50 @@ describe("GET /api/articles", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
+  test("200: responds with articles sorted by votes in ascending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(Array.isArray(article)).toBe(true);
+        expect(article).toHaveLength(13);
+        expect(article).toBeSortedBy("votes", {
+          ascending: true,
+          coerce: true,
+        });
+      });
+  });
+  test("200: responds with articles sorted by comment_count in descending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=comment_count&order=desc")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(Array.isArray(article)).toBe(true);
+        expect(article).toHaveLength(13);
+        expect(article).toBeSortedBy("comment_count", {
+          descending: true,
+          coerce: true,
+        });
+      });
+  });
+  test("400: responds with an error message with an invalid sort_by query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=AlmostWeekend")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("This is not a valid sort_by query");
+      });
+  });
+  test("400: responds with an error message with an invalid order query", () => {
+    return request(app)
+      .get("/api/articles?order=AlmostWeekend")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("This is not a valid order query");
+      });
+  });
 });
 
 describe("GET /api/articles/:article_id", () => {
@@ -425,7 +469,7 @@ describe("GET /api/articles?topic=", () => {
       .get("/api/articles?topic=WhyNotWeekendYet")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Topic Not Found");
+        expect(body.msg).toBe("No Article for this topic exist");
       });
   });
 });

@@ -13,7 +13,7 @@ const {
   selectUsers,
 
   removeComments,
-  checkIfTopicExists,
+
   selectArticles,
 } = require("./servers.models");
 
@@ -46,16 +46,9 @@ exports.getByArticleId = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { topic } = req.query;
-  if (!topic) {
-    return getAllArticles().then((article) => {
-      res.status(200).send({ article });
-    });
-  }
-  checkIfTopicExists(topic)
-    .then(() => {
-      return getAllArticles(topic);
-    })
+  const { topic, sort_by, order } = req.query;
+
+  getAllArticles(topic, sort_by, order)
     .then((article) => {
       res.status(200).send({ article });
     })
