@@ -8,8 +8,8 @@ Hosted Version: https://news-project-gpvj.onrender.com
 
 ## Dependencies:
 
--Node.js (v 20.8.0 or above)
--PostgreSQL (v 14.8 or above)
+- Node.js (v 20.8.0 or above)
+- PostgreSQL (v 14.8 or above)
 
 ## Setup Instructions:
 
@@ -20,7 +20,8 @@ Hosted Version: https://news-project-gpvj.onrender.com
 ```
 
 **2. Install Dependencies:**
--dependencies
+
+- dependencies
 
 ```
    npm install dotenv
@@ -29,7 +30,7 @@ Hosted Version: https://news-project-gpvj.onrender.com
    npm install pg
 ```
 
--devDependencies
+- devDependencies
 
 ```
 npm install husky --save-dev
@@ -40,12 +41,14 @@ npm install supertest --save-dev
 ```
 
 **3. Set Up Environment Variables:**
--Create three .env files in the project root: ".env.development", ".env.test" and ".env.production". Populate them with the required environment variables as below.
-.env.test (PGDATABASE=nc_news_test)
-.env.development (PGDATABASE=nc_news)
-.env.production (DATABASE_URL=postgres://foozyjiv:kIG9gVrxChWKsEX6wJJpEye7qmeS_XiO@flora.db.elephantsql.com/foozyjiv)
 
--Ensured the above files are .gitignore
+- dependencies
+  Create three .env files in the project root: ".env.development", ".env.test" and ".env.production". Populate them with the required environment variables as below.
+  .env.test (PGDATABASE=nc_news_test)
+  .env.development (PGDATABASE=nc_news)
+  .env.production (DATABASE_URL=postgres://foozyjiv:kIG9gVrxChWKsEX6wJJpEye7qmeS_XiO@flora.db.elephantsql.com/foozyjiv)
+
+- Ensured the above files are .gitignore
 
 **4. Seed the Local Database**
 
