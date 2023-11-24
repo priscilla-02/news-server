@@ -35,7 +35,32 @@ exports.selectArticlebyId = (article_id) => {
     });
 };
 
-exports.getAllArticles = (topic) => {
+exports.getAllArticles = (topic, sort_by, order) => {
+  const validSortby = [
+    "author",
+    "title",
+    "article_id",
+    "topic",
+    "created_at",
+    "votes",
+    "article_img_url",
+    "comment_count",
+  ];
+  const validOrder = ["asc", "desc", "DESC", "ASC"];
+
+  if (sort_by && !validSortby.includes(sort_by)) {
+    return Promise.reject({
+      status: 400,
+      msg: `This is not a valid sort_by query`,
+    });
+  }
+  if (order && !validOrder.includes(order)) {
+    return Promise.reject({
+      status: 400,
+      msg: `This is not a valid order query`,
+    });
+  }
+
   let queryValues = [];
   let queryString = `SELECT articles.article_id, articles.title, articles.body, articles.votes, articles.topic, articles.author, articles.created_at,
                article_img_url,
@@ -43,15 +68,24 @@ exports.getAllArticles = (topic) => {
                FROM articles
                LEFT JOIN comments
                ON articles.article_id = comments.article_id `;
+
   if (topic) {
     queryString += `WHERE articles.topic = $1 `;
     queryValues.push(topic);
   }
-  queryString += `GROUP BY articles.article_id
-    ORDER BY articles.created_at DESC;`;
+
+  queryString += `GROUP BY articles.article_id `;
+
+  if (sort_by && order) {
+    queryString += `ORDER BY ${sort_by} ${order}, created_at ${order} `;
+  } else if (sort_by) {
+    queryString += `ORDER BY ${sort_by} ASC `;
+  } else {
+    queryString += `ORDER BY created_at DESC `;
+  }
 
   return db.query(queryString, queryValues).then(({ rows }) => {
-    if (!rows.length) {
+    if (topic && !rows.length) {
       return Promise.reject({
         status: 404,
         msg: "No Article for this topic exist",
