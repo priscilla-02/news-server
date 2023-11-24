@@ -14,7 +14,6 @@ const {
   getUsers,
 
   deleteComments,
-  // getArticlebyQuery,
 } = require("./servers.controllers");
 
 app.use(express.json());
@@ -36,8 +35,6 @@ app.post("/api/articles/:article_id/comments", postComments);
 app.get("/api/users", getUsers);
 
 app.delete("/api/comments/:comment_id", deleteComments);
-
-// app.get("/api/articles?=", getArticlebyQuery);
 
 app.use((err, req, res, next) => {
   if (err.status) {

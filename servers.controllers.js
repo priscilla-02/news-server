@@ -116,7 +116,6 @@ exports.deleteComments = (req, res, next) => {
 };
 
 exports.getArticlebyQuery = (req, res, next) => {
-  console.log(req.query);
   const { topic } = req.query;
   console.log(topic);
   selectArticles(topic)
