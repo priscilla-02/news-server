@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const apiRouter = require("./routers/api-router");
+const cors = require("cors");
 
 const {
   getTopics,
@@ -15,6 +16,8 @@ const {
   getUsername,
   patchCommentVotes,
 } = require("./servers.controllers");
+
+app.use(cors());
 
 app.use(express.json());
 
