@@ -1,10 +1,10 @@
-# Priscilla's News Server API
+# News Server API 📰
 
-## Project Summary:
+## Welcome 👋
 
-Welcome! The project establishes an API connected to a comprehensive database of news-related items. The dataset encompasses articles, topics, users, and comments. Users can interact with this data through the hosted API, which features various endpoints set up using the GET method as detailed in the app.js file. Additionally, the API supports functionality for posting and deleting comments, along with a patch route to update the vote count for a specific article. Comprehensive documentation is available by requesting the endpoint "/api".
+The project establishes an API connected to a comprehensive database of news-related items. The dataset encompasses articles, topics, users, and comments. Users can interact with this data through the hosted API, which features various endpoints set up using the GET method as detailed in the app.js file. Additionally, the API supports functionality for posting and deleting comments, along with a patch route to update the vote count for a specific article. Comprehensive documentation is available by requesting various endpoint "/api".
 
-Hosted Version: https://news-project-gpvj.onrender.com
+Hosted Version: https://news-project-app.onrender.com/api
 
 ## Dependencies:
 
